@@ -1,0 +1,1 @@
+Commonly used ARM templates at Catalyze

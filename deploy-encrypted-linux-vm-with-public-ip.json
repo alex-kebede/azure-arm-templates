@@ -148,6 +148,9 @@
 			    "privateIPAllocationMethod": "Dynamic",
 			    "subnet": {
 				"id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')),'/subnets/',parameters('subNet'))]"
+			    },
+			    "publicIPAddress":{
+				"id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
 			    }
 			}
 		    }

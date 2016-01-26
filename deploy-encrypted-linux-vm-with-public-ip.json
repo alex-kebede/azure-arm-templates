@@ -1,0 +1,274 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+	"networkName": {
+	    "metadata": {
+		"description": "the name of the network to put the vm on"
+	    },
+	    "type": "string"
+	},
+	"vmSize": {
+	    "defaultValue": "Standard_D1_v2",
+	    "metadata": {
+		"description": "vmSize"
+	    },
+	    "type": "string"
+	},
+	"storageContainer":{
+	    "metadata": {
+		"description": "storage account container"
+	    },
+	    "type": "string"
+	},
+	"storageAccount": {
+	    "metadata": {
+		"description": "storage account"
+	    },
+	    "type": "string"
+	},
+	"sshKey": {
+	    "metadata": {
+		"description": "admin ssh key"
+	    },
+	    "type": "string"
+	},
+	"adminUserName": {
+	    "metadata": {
+		"description": "admin user name"
+	    },
+	    "type": "string"
+	},
+	"subNet": {
+	    "metadata": {
+		"description": "subnet to assign vm to"
+	    },
+	    "type": "string"
+	},
+	"aadClientID": {
+	    "metadata": {
+		"description": "Client ID of AAD app which has permissions to KeyVault"
+	    },
+	    "type": "string"
+	},
+	"aadClientSecret": {
+	    "metadata": {
+		"description": "Client Secret of AAD app which has permissions to KeyVault"
+	    },
+	    "type": "securestring"
+	},
+	"diskFormatQuery": {
+	    "defaultValue": "",
+	    "metadata": {
+		"description": "the query string used to identify the disks to format and encrypt. This parameter only works when you choose the EncryptionOperation as EnableEncryptionFormat.The scsi means the disk scsi number, the name means the mount point name"
+	    },
+	    "type": "string"
+	},
+	"encryptionOperation": {
+	    "allowedValues": [ "EnableEncryption", "EnableEncryptionFormat" ],
+	    "defaultValue": "EnableEncryption",
+	    "metadata": {
+		"description": "EnableEncryption would encrypt the disks in place and EnableEncryptionFormat would format the disks directly"
+	    },
+	    "type": "string"
+	},
+	"keyEncryptionKeyURL": {
+	    "defaultValue": "",
+	    "metadata": {
+		"description": "URL of the KeyEncryptionKey used to encrypt the volume encryption key"
+	    },
+	    "type": "string"
+	},
+	"sequenceVersion": {
+	    "defaultValue": "1",
+	    "metadata": {
+		"description": "sequence version of the bitlocker operation. Increment this everytime an operation is performed on the same VM"
+	    },
+	    "type": "string"
+	},
+	"vmName": {
+	    "metadata": {
+		"description": "Name of the virtual machine"
+	    },
+	    "type": "string"
+	},
+	"keyVaultName": {
+	    "metadata": {
+		"description": "Name of the key vault"
+	    },
+	    "type": "string"
+	},
+	"passPhrase": {
+	    "metadata": {
+		"description": "The passphrase for the disk"
+	    },
+	    "type": "string"
+	}
+
+    },
+    "variables": {
+	"extensionName": "AzureDiskEncryptionForLinux",
+	"extensionVersion": "0.1",
+	"keyEncryptionAlgorithm": "RSA-OAEP",
+	"volumeType": "Data",
+	"keyVaultURL": "[concat('https://',parameters('keyVaultName'),'.vault.azure.net/')]",
+	"keyVaultResourceID": "[concat(resourceGroup().id,'/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]",
+	"nicName":"[concat(parameters('vmName'),'Nic')]",
+	"imagePublisher": "Canonical",
+	"imageOffer": "UbuntuServer",
+	"ubuntuOSVersion": "14.04.2-LTS",
+	"publicIPAddressName":"[concat(parameters('vmName'),'IP')]"
+    },
+    "resources": [
+	{
+	    "apiVersion": "2015-06-15",
+	    "type": "Microsoft.Network/publicIPAddresses",
+	    "name": "[variables('publicIPAddressName')]",
+	    "location": "[resourceGroup().location]",
+	    "properties": {
+		"publicIPAllocationMethod": "Dynamic",
+		"dnsSettings": {
+		    "domainNameLabel": "[toLower(parameters('vmName'))]"
+		}
+	    }
+	},
+	{
+	    "name": "[variables('nicName')]",
+	    "type": "Microsoft.Network/networkInterfaces",
+	    "apiVersion": "2015-05-01-preview",
+	    "location": "[resourceGroup().location]",
+	    "dependsOn": [
+		"[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+	    ],
+	    "properties": {
+		"ipConfigurations": [
+		    {
+			"name": "ipconfig1",
+			"properties": {
+			    "privateIPAllocationMethod": "Dynamic",
+			    "subnet": {
+				"id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')),'/subnets/',parameters('subNet'))]"
+			    }
+			}
+		    }
+		]
+	    }
+	},
+	{
+	    "name": "[parameters('vmName')]",
+	    "type": "Microsoft.Compute/virtualMachines",
+	    "apiVersion": "2015-06-15",
+	    "location": "[resourceGroup().location]",
+	    "dependsOn": [
+		"[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+	    ],
+	    "properties": {
+		"hardwareProfile": {
+		    "vmSize": "[parameters('vmSize')]"
+		},
+		"osProfile": {
+		    "computername": "bastion",
+		    "adminUsername": "[parameters('adminUserName')]",
+		    "adminPassword": "",
+		    "linuxConfiguration": {
+			"disablePasswordAuthentication": "True",
+			"ssh": {
+			    "publicKeys": [
+				{
+				    "path": "[concat('/home/', parameters('adminUserName'), '/.ssh/authorized_keys')]",
+				    "keyData": "[parameters('sshKey')]"
+				}
+			    ]
+			}
+		    }
+		},
+		"storageProfile": {
+		    "imageReference": {
+			"publisher": "[variables('imagePublisher')]",
+			"offer": "[variables('imageOffer')]",
+			"sku": "[variables('ubuntuOSVersion')]",
+			"version": "latest"
+		    },
+		    "osDisk": {
+			"name": "osdisk",
+			"vhd": {
+			    "uri": "[concat('http://', parameters('storageAccount'),'.blob.core.windows.net/', parameters('storageContainer'), '/', parameters('vmName'),'Root.vhd')]"
+			},
+			"caching": "ReadWrite",
+			"createOption": "FromImage"
+		    }
+		},
+		"networkProfile": {
+		    "networkInterfaces": [
+			{
+			    "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+			}
+		    ]
+		}
+	    }
+	},
+	{
+	    "type": "Microsoft.Compute/virtualMachines/extensions",
+	    "name": "[concat(parameters('vmName'),'/', variables('extensionName'))]",
+	    "apiVersion": "2015-06-15",
+	    "location": "[resourceGroup().location]",
+	    "dependsOn": [
+		"[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+	    ],
+	    "properties": {
+		"protectedSettings": {
+		    "AADClientSecret": "[parameters('aadClientSecret')]",
+		    "Passphrase": "[parameters('passphrase')]"
+		},
+		"publisher": "Microsoft.OSTCExtensions",
+		"settings": {          
+		    "AADClientID": "[parameters('aadClientID')]",
+		    "DiskFormatQuery": "[parameters('diskFormatQuery')]",
+		    "EncryptionOperation": "[parameters('encryptionOperation')]",
+		    "KeyEncryptionAlgorithm": "[variables('keyEncryptionAlgorithm')]",
+		    "KeyEncryptionKeyURL": "[parameters('keyEncryptionKeyURL')]",
+		    "KeyVaultURL": "[variables('keyVaultURL')]",
+		    "SequenceVersion": "[parameters('sequenceVersion')]",
+		    "VolumeType": "[variables('volumeType')]"
+		},
+		"type": "AzureDiskEncryptionForLinux",
+		"typeHandlerVersion": "[variables('extensionVersion')]"
+	    }
+	},
+	{
+            "apiVersion": "2015-01-01",
+            "type": "Microsoft.Resources/deployments",
+            "name": "[concat('update-', parameters('vmName'),'-vm-with-encryption')]",
+            "dependsOn": [
+		"[resourceId('Microsoft.Compute/virtualMachines/extensions',  parameters('vmName'), variables('extensionName'))]"
+            ],
+            "properties": {
+		"mode": "Incremental",
+		"parameters": {
+		    "keyEncryptionKeyURL": {
+			"value": "[parameters('keyEncryptionKeyURL')]"
+		    },
+		    "keyVaultResourceID": {
+			"value": "[variables('keyVaultResourceID')]"
+		    },
+		    "keyVaultSecretUrl": {
+			"value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions',  parameters('vmName'), variables('extensionName'))).instanceView.statuses[0].message]"
+		    },
+		    "vmName": {
+			"value": "[parameters('vmName')]"
+		    }
+		},
+		"templateLink":{
+		    "contentVersion":"1.0.0.0",
+		    "uri": "https://raw.githubusercontent.com/catalyzeio/azure-arm-templates/master/updatevm-with-encryption-key.json"
+		}
+	    }
+	}
+    ],
+    "outputs": {
+	"BitLockerKey": {
+	    "type": "string",
+	    "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions',  parameters('vmName'), variables('extensionName'))).instanceView.statuses[0].message]"
+	}
+    }
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "North Central US",
+      "metadata": {
+        "description": "Location of the deployment"
+      }
+    },
+    "vnetCidrBlock": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network Cidr Block"
+      }
+    },
+    "subnetDockerCidrBlock": {
+      "type": "string",
+      "metadata": {
+        "description": "Docker Subnet Cidr Block"
+      }
+    },
+    "subnetMgmtCidrBlock": {
+      "type": "string",
+      "metadata": {
+        "description": "Mgmt Subnet Cidr Block"
+      }
+    },
+    "subnetPublicCidrBlock": {
+      "type": "string",
+      "metadata": {
+        "description": "Public Subnet Cidr Block"
+      }
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "VirtualNetwork",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetCidrBlock')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "SubnetDocker",
+            "properties": {
+              "addressPrefix": "[parameters('subnetDockerCidrBlock')]"
+            }
+          },
+          {
+            "name": "SubnetMgmt",
+            "properties": {
+              "addressPrefix": "[parameters('subnetMgmtCidrBlock')]"
+            }
+          },
+          {
+            "name": "SubnetPublic",
+            "properties": {
+              "addressPrefix": "[parameters('subnetPublicCidrBlock')]"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+

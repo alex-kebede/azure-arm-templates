@@ -62,7 +62,25 @@
           }
         ]
       }
-    }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat([resourceGroup().name], 'MgmtHostStorageAccount')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "Premium_LRS"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat([resourceGroup().name], 'MgmtHostStorageAccount')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "Premium_LRS"
+      }
+    },
   ]
 }
 

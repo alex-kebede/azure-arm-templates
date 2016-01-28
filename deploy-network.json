@@ -31,6 +31,7 @@
       "defaultValue": null,
       "metadata": {
         "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. The ID must be specified as a GUID."
+      }
     },
     "AADObjectID": {
       "type": "string",

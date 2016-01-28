@@ -65,7 +65,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(resourceGroup().name, 'MgmtHostStorageAccount')]",
+      "name": "[concat(resourceGroup().name, 'MgmtHostSA')]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "properties": {
@@ -74,7 +74,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(resourceGroup().name, 'MgmtHostStorageAccount')]",
+      "name": "[concat(resourceGroup().name, 'DockerHostSA')]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "properties": {

@@ -25,6 +25,18 @@
       "metadata": {
         "description": "Public Subnet Cidr Block"
       }
+    },
+    "tenantId": {
+      "type": "string",
+      "defaultValue": null,
+      "metadata": {
+        "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. The ID must be specified as a GUID."
+    },
+    "AADObjectID": {
+      "type": "string",
+      "metadata": {
+        "description": "Object ID of AAD app which has permissions to KeyVault. azure ad sp show --search appName"
+      }
     }
   },
   "variables": {
@@ -79,6 +91,29 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "accountType": "Premium_LRS"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[concat(resourceGroup().name, 'KeyVault')]"",
+      "apiVersion": "2015-06-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "enabledForDeployment": true,
+        "enabledForDiskEncryption": true,
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [ {
+          "tenantId": "[parameters('tenantId')]",
+          "objectID": "[parameters('AADObjectID')]",
+          "permissions": {
+            "keys": ["all"],
+            "secrets": ["all"]
+          }
+        } ],
+        "sku": {
+          "name": "premium",
+          "family": "A"
+        }
       }
     }
   ]

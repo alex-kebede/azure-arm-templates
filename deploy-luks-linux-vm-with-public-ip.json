@@ -31,7 +31,8 @@
         "description": "Name of the virtual machine"
       },
       "type": "string"
-    },
+    }
+  },
   "variables": {
   },
   "resources": [

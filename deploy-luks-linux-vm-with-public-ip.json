@@ -60,10 +60,10 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')),'/subnets/',parameters('subNet'))]"
+                "id": "[concat(parameters('networkName'),'/subnets/',parameters('subNet'))]"
               },
               "publicIPAddress":{
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('vmName'),'PublicIPAddress')]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('vmName'),'PublicIPAddress'))]"
               }
             }
           }
@@ -121,7 +121,7 @@
         "networkProfile": {
           "networkInterfaces": [
           {
-            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('vmName'),'NIC')]"
+            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC'))]"
           } ]
         }
       }

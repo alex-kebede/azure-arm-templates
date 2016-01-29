@@ -51,7 +51,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(parameters('vmName'), 'NIC)]",
+      "name": "[concat(parameters('vmName'), 'NIC')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": [

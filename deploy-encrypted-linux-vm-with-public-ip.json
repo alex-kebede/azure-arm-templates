@@ -170,7 +170,7 @@
 		    "vmSize": "[parameters('vmSize')]"
 		},
 		"osProfile": {
-		    "computername": "bastion",
+		    "computername": "parameters('vmName')",
 		    "adminUsername": "[parameters('adminUserName')]",
 		    "adminPassword": "",
 		    "linuxConfiguration": {

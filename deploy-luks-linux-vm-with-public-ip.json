@@ -115,7 +115,8 @@
             "lun": 0,
             "vhd": {
               "uri": "[concat('http://', parameters('storageAccount'),'.blob.core.windows.net/data', parameters('vmName'),'.vhd')]"
-            }
+            },
+            "createOption":"Empty"
           } ]
         },
         "networkProfile": {

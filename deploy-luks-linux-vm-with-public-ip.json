@@ -77,7 +77,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D4_v2"
+          "vmSize": "Standard_DS13"
         },
         "osProfile": {
           "computername": "[parameters('vmName')]",
@@ -111,7 +111,7 @@
           },
           "dataDisks": [ {
             "name": "data",
-            "diskSizeGB": "150",
+            "diskSizeGB": "100",
             "lun": 0,
             "vhd": {
               "uri": "[concat('http://', parameters('storageAccount'),'.blob.core.windows.net/data/', parameters('vmName'),'.vhd')]"

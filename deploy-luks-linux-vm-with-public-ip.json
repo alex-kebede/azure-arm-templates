@@ -130,7 +130,7 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(paramters('vmName'),'/luks')]",
+      "name": "[concat(parameters('vmName'),'/luks')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"

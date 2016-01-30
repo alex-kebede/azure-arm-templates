@@ -124,6 +124,23 @@
           {
             "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC'))]"
           } ]
+        },
+        "extensionProfile": {
+          "extensions": [ { 
+            "name": "luks",
+            "properties": {
+              "publisher": "Microsoft.OSTCExtensions",
+              "type": "CustomScriptForLinux",
+              "typeHandlerVersion": "1.2",
+              "autoUpgradeMinorVersion": true,
+              "settings": {
+                "fileUris": [
+                  "https://raw.githubusercontent.com/catalyzeio/azure-arm-templates/master/luks.sh"
+                ],
+                "commandToExecute": "sh luks.sh"
+              }
+            }
+          } ] 
         }
       }
     }

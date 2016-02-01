@@ -42,25 +42,40 @@
     "variables": {
 	"vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
 	"subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
+	"publicIPAddressType": "Dynamic",
 	"backEndName":"backEnd",
 	"backEndSSLName":"backEndSSL",
 	"frontEndName":"frontEnd",
 	"probeName":"probe",
+	"publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
+	"publicIPAddressName":"[concat(parameters('loadBalancerName'), '-lb-public-ip')]",
 	"apiVersion": "2015-06-15"
     },
     "resources": [
 	{
 	    "apiVersion": "[variables('apiVersion')]",
+	    "type": "Microsoft.Network/publicIPAddresses",
+	    "name": "[variables('publicIPAddressName')]",
+	    "location": "[resourceGroup().location]",
+	    "properties": {
+		"publicIPAllocationMethod": "[variables('publicIPAddressType')]"
+	    }
+	},
+	{
+	    "apiVersion": "[variables('apiVersion')]",
 	    "name": "[parameters('loadBalancerName')]",
 	    "type": "Microsoft.Network/loadBalancers",
 	    "location": "[resourceGroup().location]",
+	    "dependsOn": [
+		"[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+	    ],
 	    "properties": {
 		"frontendIPConfigurations": [
 		    {
 			"name": "[variables('frontEndName')]",
 			"properties": {
-			    "subnet": {
-				"id": "[variables('subnetRef')]"
+			    "publicIPAddress":{
+				"id":"[variables('publicIPAddressID')]"
 			    }
 			}
 		    }

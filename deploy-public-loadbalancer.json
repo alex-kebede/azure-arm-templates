@@ -48,7 +48,7 @@
 	"frontEndName":"frontEnd",
 	"probeName":"probe",
 	"publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
-	"publicIPAddressName":"[concat(parameters('loadBalancerName'), '-lb-public-ip')]",
+	"publicIPAddressName":"[concat(parameters('loadBalancerName'), '-public-ip')]",
 	"apiVersion": "2015-06-15"
     },
     "resources": [

@@ -9,7 +9,9 @@ then
   echo "${SALT_ROOT_FS} Already Encrypted."
 else
   apt-get install -y cryptsetup
-  mkdir ${SALT_ROOT_FS} 
+  if [ ! -d ${SALT_ROOT_FS} ]; then
+    mkdir ${SALT_ROOT_FS}
+  fi
   echo "/dev/mapper/luksdata ${SALT_ROOT_FS} ext4 defaults 0 2" >> /etc/fstab
   ssh-keygen -t rsa -b 4092 -N '' -f /etc/luks.key
   cryptsetup luksFormat -q --key-file=/etc/luks.key ${DEVICE}

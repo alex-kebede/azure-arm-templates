@@ -16,3 +16,21 @@ else
   mount /data
   touch /root/crypted
 fi
+
+# Setting Up Salt Repo
+add-apt-repository -y ppa:saltstack/salt
+apt-get update
+
+# Installing Salt Minion
+apt-get install -y salt-minion
+
+cat <<EOF > /etc/salt/minion
+master: ${SALT_MASTER}
+id:  ${VM_NAME}.${POD_ID}.catalyzeapps.com
+grains:
+  ebs_disk: true
+  cloud_provider: Azure
+  pod_type: sbox
+  pod_id: ${POD_ID}
+EOF
+/usr/sbin/service salt-minion restart

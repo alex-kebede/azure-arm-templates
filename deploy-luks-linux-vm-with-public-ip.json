@@ -126,6 +126,26 @@
           } ]
         }
       }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'),'/luks')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.3",
+        "settings": {
+          "fileUris": [
+             "https://raw.githubusercontent.com/catalyzeio/azure-arm-templates/master/luks.sh"
+          ],
+          "commandToExecute": "sh luks.sh"
+        }
+      }
     }
   ],
   "outputs": {

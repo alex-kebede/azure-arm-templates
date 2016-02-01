@@ -31,29 +31,51 @@
 	    "metadata": {
 		"description": "the port to connect to"
 	    }
+	},
+	"backEndSSLPort": {
+	    "type": "int",
+	    "metadata": {
+		"description": "the port to connect to for SSL"
+	    }
 	}
     },
     "variables": {
 	"vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
 	"subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
-	"backEndName":"[concat('loadBalancerNamer'),'BackEnd']",
-	"frontEndName":"[concat('loadBalancerNamer'),'FrontEnd']",
-	"probeName":"[concat('loadBalancerNamer'),'Probe']",
+	"publicIPAddressType": "Static",
+	"backEndName":"backEnd",
+	"backEndSSLName":"backEndSSL",
+	"frontEndName":"frontEnd",
+	"probeName":"probe",
+	"publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
+	"publicIPAddressName":"[concat(parameters('loadBalancerName'), '-public-ip')]",
 	"apiVersion": "2015-06-15"
     },
     "resources": [
 	{
 	    "apiVersion": "[variables('apiVersion')]",
+	    "type": "Microsoft.Network/publicIPAddresses",
+	    "name": "[variables('publicIPAddressName')]",
+	    "location": "[resourceGroup().location]",
+	    "properties": {
+		"publicIPAllocationMethod": "[variables('publicIPAddressType')]"
+	    }
+	},
+	{
+	    "apiVersion": "[variables('apiVersion')]",
 	    "name": "[parameters('loadBalancerName')]",
 	    "type": "Microsoft.Network/loadBalancers",
 	    "location": "[resourceGroup().location]",
+	    "dependsOn": [
+		"[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+	    ],
 	    "properties": {
 		"frontendIPConfigurations": [
 		    {
 			"name": "[variables('frontEndName')]",
 			"properties": {
-			    "subnet": {
-				"id": "[variables('subnetRef')]"
+			    "publicIPAddress":{
+				"id":"[variables('publicIPAddressID')]"
 			    }
 			}
 		    }
@@ -61,19 +83,22 @@
 		"backendAddressPools": [
 		    {
 			"name": "[variables('backEndName')]"
+		    },
+		    {
+			"name": "[variables('backEndSSLName')]"
 		    }
 		],
 		"loadBalancingRules": [
 		    {
 			"properties": {
 			    "frontendIPConfiguration": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
 			    },
 			    "backendAddressPool": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/backendAddressPools/', variables('backEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/backendAddressPools/', variables('backEndName'))]"
 			    },
 			    "probe": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/probes/', variables('probeName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/probes/', variables('probeName'))]"
 			    },
 			    "protocol": "Tcp",
 			    "frontendPort": 80,
@@ -85,17 +110,17 @@
 		    {
 			"properties": {
 			    "frontendIPConfiguration": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
 			    },
 			    "backendAddressPool": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/backendAddressPools/', variables('backEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/backendAddressPools/', variables('backEndSSLName'))]"
 			    },
 			    "probe": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/probes/', variables('probeName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/probes/', variables('probeName'))]"
 			    },
 			    "protocol": "Tcp",
 			    "frontendPort": 443,
-			    "backendPort": "[parameters('backEndPort')]",
+			    "backendPort": "[parameters('backEndSSLPort')]",
 			    "idleTimeoutInMinutes": 15
 			},
 			"name": "https"
@@ -105,9 +130,9 @@
 		    {
 			"properties": {
 			    "protocol": "Tcp",
-			    "port": "[parameters('backEndPort')]",
+			    "port": "[parameters('backEndSSLPort')]",
 			    "intervalInSeconds": 15,
-			    "numberOfProbes": 2
+			    "numberOfProbes": 1
 			},
 			"name": "[variables('probeName')]"
 		    }

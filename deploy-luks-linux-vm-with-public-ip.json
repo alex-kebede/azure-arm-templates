@@ -155,7 +155,7 @@
           "fileUris": [
              "[concat('https://raw.githubusercontent.com/catalyzeio/azure-arm-templates/master/', parameters('buildScript'))]"
           ],
-          "commandToExecute": "[concat('bash -c \'export POD_ID=', parameters('networkName'), ' SALT_MASTER=', parameters('saltMasterIP'), '; ', parameters('buildScript'), '\'')]"
+          "commandToExecute": "[concat('bash -c \\'export POD_ID=', parameters('networkName'), ' SALT_MASTER=', parameters('saltMasterIP'), '; ', parameters('buildScript'), '\\'')]"
         }
       }
     }

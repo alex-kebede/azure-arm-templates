@@ -132,7 +132,7 @@
 			    "protocol": "Tcp",
 			    "port": "[parameters('backEndSSLPort')]",
 			    "intervalInSeconds": 15,
-			    "numberOfProbes": 2
+			    "numberOfProbes": 1
 			},
 			"name": "[variables('probeName')]"
 		    }

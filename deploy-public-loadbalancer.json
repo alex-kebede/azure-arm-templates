@@ -42,10 +42,10 @@
     "variables": {
 	"vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
 	"subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
-	"backEndName":"[concat(parameters('loadBalancerName'),'BackEnd')]",
-	"backEndSSLName":"[concat(parameters('loadBalancerName'),'BackEndSSL')]",
-	"frontEndName":"[concat(parameters('loadBalancerName'),'FrontEnd')]",
-	"probeName":"[concat(parameters('loadBalancerName'),'Probe')]",
+	"backEndName":"backEnd",
+	"backEndSSLName":"backEndSSL",
+	"frontEndName":"frontEnd",
+	"probeName":"probe",
 	"apiVersion": "2015-06-15"
     },
     "resources": [

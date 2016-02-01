@@ -36,9 +36,9 @@
     "variables": {
 	"vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
 	"subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
-	"backEndName":"[concat('loadBalancerNamer'),'BackEnd']",
-	"frontEndName":"[concat('loadBalancerNamer'),'FrontEnd']",
-	"probeName":"[concat('loadBalancerNamer'),'Probe']",
+	"backEndName":"[concat('loadBalancerName'),'BackEnd']",
+	"frontEndName":"[concat('loadBalancerName'),'FrontEnd']",
+	"probeName":"[concat('loadBalancerName'),'Probe']",
 	"apiVersion": "2015-06-15"
     },
     "resources": [

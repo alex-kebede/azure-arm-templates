@@ -50,18 +50,6 @@
   "resources": [
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(parameters('vmName'), 'PublicIPAddress')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "dnsSettings": {
-          "domainNameLabel": "[toLower(parameters('vmName'))]"
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('vmName'), 'NIC')]",
       "location": "[resourceGroup().location]",
@@ -73,9 +61,6 @@
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')),'/subnets/',parameters('subNet'))]"
-              },
-              "publicIPAddress":{
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('vmName'),'PublicIPAddress'))]"
               }
             }
           }

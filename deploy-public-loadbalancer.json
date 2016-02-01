@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
 	"loadBalancerName": {
@@ -31,14 +31,21 @@
 	    "metadata": {
 		"description": "the port to connect to"
 	    }
+	},
+	"backEndSSLPort": {
+	    "type": "int",
+	    "metadata": {
+		"description": "the port to connect to for SSL"
+	    }
 	}
     },
     "variables": {
 	"vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
 	"subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
-	"backEndName":"[concat('loadBalancerName'),'BackEnd')]",
-	"frontEndName":"[concat('loadBalancerName'),'FrontEnd')]",
-	"probeName":"[concat('loadBalancerName'),'Probe')]",
+	"backEndName":"[concat(parameters('loadBalancerName'),'BackEnd')]",
+	"backEndSSLName":"[concat(parameters('loadBalancerName'),'BackEndSSL')]",
+	"frontEndName":"[concat(parameters('loadBalancerName'),'FrontEnd')]",
+	"probeName":"[concat(parameters('loadBalancerName'),'Probe')]",
 	"apiVersion": "2015-06-15"
     },
     "resources": [
@@ -61,19 +68,22 @@
 		"backendAddressPools": [
 		    {
 			"name": "[variables('backEndName')]"
+		    },
+		    {
+			"name": "[variables('backEndSSLName')]"
 		    }
 		],
 		"loadBalancingRules": [
 		    {
 			"properties": {
 			    "frontendIPConfiguration": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
 			    },
 			    "backendAddressPool": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/backendAddressPools/', variables('backEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/backendAddressPools/', variables('backEndName'))]"
 			    },
 			    "probe": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/probes/', variables('probeName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/probes/', variables('probeName'))]"
 			    },
 			    "protocol": "Tcp",
 			    "frontendPort": 80,
@@ -85,17 +95,17 @@
 		    {
 			"properties": {
 			    "frontendIPConfiguration": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/frontendIpConfigurations/',variables('frontEndName'))]"
 			    },
 			    "backendAddressPool": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/backendAddressPools/', variables('backEndName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/backendAddressPools/', variables('backEndSSLName'))]"
 			    },
 			    "probe": {
-				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/probes/', variables('probeName'))]"
+				"id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/probes/', variables('probeName'))]"
 			    },
 			    "protocol": "Tcp",
 			    "frontendPort": 443,
-			    "backendPort": "[parameters('backEndPort')]",
+			    "backendPort": "[parameters('backEndSSLPort')]",
 			    "idleTimeoutInMinutes": 15
 			},
 			"name": "https"
@@ -105,7 +115,7 @@
 		    {
 			"properties": {
 			    "protocol": "Tcp",
-			    "port": "[parameters('backEndPort')]",
+			    "port": "[parameters('backEndSSLPort')]",
 			    "intervalInSeconds": 15,
 			    "numberOfProbes": 2
 			},

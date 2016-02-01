@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-if [ -a /root/crypted ]
+if [ -f /root/crypted ]
 then
   echo "/data Already Encrypted."
 else

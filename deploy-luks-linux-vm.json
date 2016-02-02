@@ -43,6 +43,12 @@
         "description": "Name of Build Script"
       },
       "type": "string"
+    },
+    "customData": {
+      "metaData": {
+        "description" : "Custom Data Script"
+      },
+      "type": "string"
     }
   },
   "variables": {
@@ -80,6 +86,7 @@
           "computername": "[parameters('vmName')]",
           "adminUsername": "ubuntu",
           "adminPassword": "",
+          "customData": "[base64(parameters('customData'))]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "True",
             "ssh": {

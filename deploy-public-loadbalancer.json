@@ -20,12 +20,6 @@
 		"description": "Name of the sub net"
 	    }
 	},
-	"nicName": {
-	    "type": "string",
-	    "metadata": {
-		"description": "Name of the nic to attach to"
-	    }
-	},
 	"backEndPort": {
 	    "type": "int",
 	    "metadata": {

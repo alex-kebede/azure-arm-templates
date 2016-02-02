@@ -116,7 +116,7 @@
           "dataDisks": [ {
             "name": "data",
             "diskSizeGB": "150",
-            "lun": 1,
+            "lun": 3,
             "vhd": {
               "uri": "[concat('http://', parameters('storageAccount'),'.blob.core.windows.net/data/', parameters('vmName'),'.vhd')]"
             },

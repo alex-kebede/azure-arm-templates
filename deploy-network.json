@@ -116,6 +116,33 @@
           "family": "A"
         }
       }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "type": "Microsoft.Compute/availabilitySets",
+      "name": "ASDocker",
+      "properties": { 
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      } 
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "type": "Microsoft.Compute/availabilitySets",
+      "name": "ASMgmt",
+      "properties": { 
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      } 
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "type": "Microsoft.Compute/availabilitySets",
+      "name": "ASPublic",
+      "properties": { 
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      } 
     }
   ]
 }

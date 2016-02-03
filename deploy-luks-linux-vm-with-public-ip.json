@@ -65,6 +65,9 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('vmName'), 'NIC')]",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('vmName'), 'PublicIPAddress')]"
+      ],
       "properties": {
         "ipConfigurations": [
           {

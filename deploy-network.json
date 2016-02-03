@@ -130,6 +130,46 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
+      "name": "ASBuild",
+      "location": "[resourceGroup().location]",
+      "properties": { 
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      } 
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "ASBatch",
+      "location": "[resourceGroup().location]",
+      "properties": { 
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      } 
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "ASConsole",
+      "location": "[resourceGroup().location]",
+      "properties": { 
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      } 
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "ASSalt",
+      "location": "[resourceGroup().location]",
+      "properties": { 
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      } 
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/availabilitySets",
       "name": "ASMgmt",
       "location": "[resourceGroup().location]",
       "properties": { 

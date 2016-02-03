@@ -98,7 +98,7 @@
           "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySet'))]"
         },
         "hardwareProfile": {
-          "vmSize": "Standard_DS13"
+          "vmSize": "Standard_DS12"
         },
         "osProfile": {
           "computername": "[parameters('vmName')]",

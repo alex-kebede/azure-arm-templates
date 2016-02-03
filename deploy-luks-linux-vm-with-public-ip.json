@@ -32,6 +32,12 @@
       },
       "type": "string"
     },
+    "securityGroup": {
+      "metadata": {
+        "description": "Security Group Name"
+      },
+      "type": "string"
+    },
     "vmName": {
       "metadata": {
         "description": "Name of the virtual machine"
@@ -69,6 +75,9 @@
         "[concat('Microsoft.Network/publicIPAddresses/', parameters('vmName'), 'PublicIPAddress')]"
       ],
       "properties": {
+        "networkSecurityGroup":{  
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameter('securityGroup')]"
+        },
         "ipConfigurations": [
           {
             "name": "ipconfig1",

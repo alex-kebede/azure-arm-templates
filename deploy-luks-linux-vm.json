@@ -26,6 +26,12 @@
       },
       "type": "string"
     },
+    "availabilitySet": {
+      "metadata": {
+        "description": "Availability Set name to assign host to"
+      },
+      "type": "string"
+    },
     "vmName": {
       "metadata": {
         "description": "Name of the virtual machine"
@@ -70,6 +76,9 @@
         "[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC')]"
       ],
       "properties": {
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySet', parameters('availabilitySet'))]"
+        },
         "hardwareProfile": {
           "vmSize": "Standard_DS13"
         },

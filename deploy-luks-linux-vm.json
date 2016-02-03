@@ -77,7 +77,7 @@
       ],
       "properties": {
         "availabilitySet": {
-          "id": "[resourceId('Microsoft.Compute/availabilitySet', parameters('availabilitySet'))]"
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySet'))]"
         },
         "hardwareProfile": {
           "vmSize": "Standard_DS13"

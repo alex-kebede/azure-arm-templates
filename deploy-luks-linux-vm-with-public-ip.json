@@ -76,7 +76,7 @@
       ],
       "properties": {
         "networkSecurityGroup":{  
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameter('securityGroup')]"
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameter('securityGroup'))]"
         },
         "ipConfigurations": [
           {

@@ -95,6 +95,15 @@
       }
     },
     {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat(resourceGroup().name, 'VolumesSA')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "Premium_LRS"
+      }
+    },
+    {
       "type": "Microsoft.KeyVault/vaults",
       "name": "[concat(resourceGroup().name, 'KeyVault')]",
       "apiVersion": "2015-06-01",

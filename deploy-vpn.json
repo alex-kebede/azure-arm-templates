@@ -15,7 +15,7 @@
       }
     },
     "localAddressPrefix": {
-      "type": "string",
+      "type": "array",
       "metadata": {
         "description": "Subnet of remote site."
       }
@@ -52,7 +52,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "localNetworkAddressSpace": {
-          "addressPrefixes": [
+          "addressPrefixes": [ 
             "[parameters('localAddressPrefix')]"
           ]
         },

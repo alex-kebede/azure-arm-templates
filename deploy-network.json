@@ -26,6 +26,12 @@
         "description": "Public Subnet Cidr Block"
       }
     },
+    "subnetGatewayCidrBlock": {
+      "type": "string",
+      "metadata": {
+        "description": "Gateway Subnet Cidr Block"
+      }
+    },
     "tenantId": {
       "type": "string",
       "defaultValue": null,
@@ -71,6 +77,12 @@
             "name": "SubnetPublic",
             "properties": {
               "addressPrefix": "[parameters('subnetPublicCidrBlock')]"
+            }
+          },
+          {
+            "name": "GatewaySubnet",
+            "properties": {
+              "addressPrefix": "[parameters('subnetGatewayCidrBlock')]"
             }
           }
         ]

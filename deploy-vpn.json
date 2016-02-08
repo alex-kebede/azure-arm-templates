@@ -63,7 +63,7 @@
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/virtualNetworkGateways",
       "name": "[concat(parameters('siteName'), 'VirtualNetworkGateway')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup.()location]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', parameters('siteName'), 'VPNPublicIP')]"
       ],
@@ -91,7 +91,7 @@
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/connections",
       "name": "[concat(parameters('siteName'), 'Connection')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup.()location]",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworkGateways', parameters('siteName'), 'VirtualNetworkGateway')]",
         "[concat('Microsoft.Network/localNetworkGateways', parameters('siteName'), 'LocalNetworkGateway')]"

@@ -83,7 +83,7 @@
           }
         ],
         "gatewayType": "Vpn",
-        "vpnType": "RouteBased",
+        "vpnType": "PolicyBased",
         "enableBgp": "false"
       }
     },

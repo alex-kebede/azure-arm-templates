@@ -52,9 +52,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "localNetworkAddressSpace": {
-          "addressPrefixes": [ 
-            "[parameters('localAddressPrefix')]"
-          ]
+          "addressPrefixes": "[parameters('localAddressPrefix')]"
         },
         "gatewayIpAddress": "[parameters('localGatewayIpAddress')]"
       }

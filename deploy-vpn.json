@@ -93,8 +93,8 @@
       "name": "[concat(parameters('siteName'), 'Connection')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworkGateways', parameters('siteName'), 'VirtualNetworkGateway')]",
-        "[concat('Microsoft.Network/localNetworkGateways', parameters('siteName'), 'LocalNetworkGateway')]"
+        "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('siteName'), 'VirtualNetworkGateway')]",
+        "[concat('Microsoft.Network/localNetworkGateways/', parameters('siteName'), 'LocalNetworkGateway')]"
       ], 
       "properties": {
         "virtualNetworkGateway1": {

@@ -25,6 +25,12 @@
       "metadata": {
         "description": "Name of the VM"
       }
+    },
+    "subnetID": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet ID"
+      }
     }
   },
   "variables": {
@@ -112,6 +118,9 @@
           {
             "name": "ipconfig1",
             "properties": {
+              "subnet": {
+                "id": "[parameters('subnetID')]"
+              },
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')),'/backendAddressPools/loadBalancerBackEnd')]"

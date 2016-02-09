@@ -72,6 +72,20 @@
             "name": "loadBalancerBackEnd"
           }
         ],
+        "inboundNatRules": [
+          {
+            "name": "RDP-VM0",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/frontendIpConfigurations/loadBalancerFrontEnd1')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": "[parameters('backEndPort')]",
+              "backendPort": "[parameters('backEndPort')]",
+              "enableFloatingIP": false
+            }
+          }
+        ],
         "loadBalancingRules": [
           {
             "name": "Rule1",
@@ -125,7 +139,11 @@
                 {
                   "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')),'/backendAddressPools/loadBalancerBackEnd')]"
                 }
-              ]
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/inboundNatRules/RDP-VM0')]"
+                }
             }
           }
         ]

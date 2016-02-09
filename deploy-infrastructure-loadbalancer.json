@@ -72,20 +72,6 @@
             "name": "loadBalancerBackEnd"
           }
         ],
-        "inboundNatRules": [
-          {
-            "name": "RDP-VM0",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/frontendIpConfigurations/loadBalancerFrontEnd1')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": "5000",
-              "backendPort": "[parameters('backEndPort')]",
-              "enableFloatingIP": false
-            }
-          }
-        ],
         "loadBalancingRules": [
           {
             "name": "Rule1",
@@ -101,7 +87,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": "[parameters('frontEndPort')]",
-              "backendPort": "[parameters('frontEndPort')]",
+              "backendPort": "[parameters('backEndPort')]",
               "idleTimeoutInMinutes": 15
             }
           }
@@ -111,7 +97,7 @@
             "name": "probe",
             "properties": {
               "protocol": "Tcp",
-              "port": "[parameters('frontEndPort')]",
+              "port": "[parameters('backEndPort')]",
               "intervalInSeconds": 15,
               "numberOfProbes": 1
             }
@@ -138,11 +124,6 @@
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')),'/backendAddressPools/loadBalancerBackEnd')]"
-                }
-              ],
-              "loadBalancerInboundNatRules": [
-                {
-                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/inboundNatRules/RDP-VM0')]"
                 }
               ]
             }

@@ -80,7 +80,7 @@
                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/frontendIpConfigurations/loadBalancerFrontEnd1')]"
               },
               "protocol": "tcp",
-              "frontendPort": "[parameters('backEndPort')]",
+              "frontendPort": "5000",
               "backendPort": "[parameters('backEndPort')]",
               "enableFloatingIP": false
             }
@@ -101,7 +101,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": "[parameters('frontEndPort')]",
-              "backendPort": "[parameters('backEndPort')]",
+              "backendPort": "[parameters('frontEndPort')]",
               "idleTimeoutInMinutes": 15
             }
           }
@@ -111,7 +111,7 @@
             "name": "probe",
             "properties": {
               "protocol": "Tcp",
-              "port": "[parameters('backEndPort')]",
+              "port": "[parameters('frontEndPort')]",
               "intervalInSeconds": 15,
               "numberOfProbes": 1
             }

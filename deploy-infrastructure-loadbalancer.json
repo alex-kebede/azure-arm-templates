@@ -55,8 +55,8 @@
           {
             "name": "loadBalancerFrontEnd1",
             "properties": {
-              "publicIPAddress":{
-                "id":"[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('loadBalancerName'), 'PublicIP')]"
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('loadBalancerName'), 'PublicIP')]"
               }
             }
           }
@@ -94,9 +94,10 @@
               "port": "[parameters('backEndPort')]",
               "intervalInSeconds": 15,
               "numberOfProbes": 1
+            }
           }
-        }
-      ]
+        ]
+      }
     },
     {
       "apiVersion": "2015-06-15",

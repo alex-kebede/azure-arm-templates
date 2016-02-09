@@ -56,7 +56,7 @@
             "name": "loadBalancerFrontEnd1",
             "properties": {
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('loadBalancerName'), 'PublicIP')]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('loadBalancerName'), 'PublicIP'))]"
               }
             }
           }

@@ -58,7 +58,7 @@
       ], 
       "properties": {
         "virtualNetworkGateway1": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', 'raxVirtualNetworkGateway'))]"
+          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', 'raxVirtualNetworkGateway')]"
         },
         "localNetworkGateway2": {
           "id": "[resourceId('Microsoft.Network/localNetworkGateways', concat(parameters('siteName'), 'LocalNetworkGateway'))]"

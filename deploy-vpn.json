@@ -37,15 +37,6 @@
   },
   "resources": [
     {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(parameters('siteName'), 'VPNPublicIP')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic"
-      }
-    },
-    {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/localNetworkGateways",
       "name": "[concat(parameters('siteName'), 'LocalNetworkGateway')]",
@@ -59,44 +50,15 @@
     },
     {
       "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/virtualNetworkGateways",
-      "name": "[concat(parameters('siteName'), 'VirtualNetworkGateway')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('siteName'), 'VPNPublicIP')]"
-      ],
-      "properties": {
-        "ipConfigurations": [ 
-          {
-            "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')), '/subnets/', 'GatewaySubnet')]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('siteName'), 'VPNPublicIP'))]"
-              }
-            },
-            "name": "vnetGatewayConfig"
-          }
-        ],
-        "gatewayType": "Vpn",
-        "vpnType": "PolicyBased",
-        "enableBgp": "false"
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/connections",
       "name": "[concat(parameters('siteName'), 'Connection')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('siteName'), 'VirtualNetworkGateway')]",
         "[concat('Microsoft.Network/localNetworkGateways/', parameters('siteName'), 'LocalNetworkGateway')]"
       ], 
       "properties": {
         "virtualNetworkGateway1": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', concat(parameters('siteName'), 'VirtualNetworkGateway'))]"
+          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', 'raxVirtualNetworkGateway'))]"
         },
         "localNetworkGateway2": {
           "id": "[resourceId('Microsoft.Network/localNetworkGateways', concat(parameters('siteName'), 'LocalNetworkGateway'))]"

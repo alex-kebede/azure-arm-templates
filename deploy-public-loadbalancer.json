@@ -36,7 +36,7 @@
     "variables": {
 	"vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
 	"subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
-	"publicIPAddressType": "Static",
+	"publicIPAddressType": "Dynamic",
 	"backEndName":"backEnd",
 	"backEndSSLName":"backEndSSL",
 	"frontEndName":"frontEnd",

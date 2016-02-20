@@ -52,7 +52,10 @@
 	    "name": "[variables('publicIPAddressName')]",
 	    "location": "[resourceGroup().location]",
 	    "properties": {
-		"publicIPAllocationMethod": "[variables('publicIPAddressType')]"
+		"publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+		"dnsSettings": {
+		    "domainNameLabel": "[toLower(parameters('loadBalancerName'))]"
+		}
 	    }
 	},
 	{

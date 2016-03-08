@@ -204,8 +204,18 @@
 		"networkProfile": {
 		    "networkInterfaces": [
 			{
-			    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC'))]"
-			} ]
+			    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC1'))]"
+			},
+			{
+			    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC2'))]"
+			},
+			{
+			    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC3'))]"
+			},
+			{
+			    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC4'))]"
+			} 
+		    ]
 		}
 	    }
 	}

@@ -148,7 +148,10 @@
 	    "name": "[parameters('vmName')]",
 	    "location": "[resourceGroup().location]",
 	    "dependsOn": [
-		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC')]"
+		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC1')]",
+		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC2')]",
+		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC3')]",
+		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC4')]"
 	    ],
 	    "properties": {
 		"availabilitySet": {

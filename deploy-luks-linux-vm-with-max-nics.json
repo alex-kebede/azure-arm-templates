@@ -164,7 +164,6 @@
 		    "computername": "[parameters('vmName')]",
 		    "adminUsername": "ubuntu",
 		    "adminPassword": "",
-		    "customData": "[base64(parameters('customData'))]",
 		    "linuxConfiguration": {
 			"disablePasswordAuthentication": "True",
 			"ssh": {

@@ -154,9 +154,6 @@
 		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC4')]"
 	    ],
 	    "properties": {
-		"availabilitySet": {
-		    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySet'))]"
-		},
 		"hardwareProfile": {
 		    "vmSize": "Standard_DS12"
 		},

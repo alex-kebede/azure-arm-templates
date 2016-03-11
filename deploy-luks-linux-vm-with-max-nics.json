@@ -57,28 +57,6 @@
 	{
 	    "apiVersion": "2015-06-15",
 	    "type": "Microsoft.Network/networkInterfaces",
-	    "name": "[concat(parameters('vmName'), 'NIC1')]",
-	    "location": "[resourceGroup().location]",
-	    "properties": {
-		"networkSecurityGroup":{
-		    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('securityGroup'))]"
-		},
-		"ipConfigurations": [
-		    {
-			"name": "ipconfig1",
-			"properties": {
-			    "privateIPAllocationMethod": "Dynamic",
-			    "subnet": {
-				"id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')),'/subnets/',parameters('subNet'))]"
-			    }
-			}
-		    }
-		]
-	    }
-	},
-	{
-	    "apiVersion": "2015-06-15",
-	    "type": "Microsoft.Network/networkInterfaces",
 	    "name": "[concat(parameters('vmName'), 'NIC2')]",
 	    "location": "[resourceGroup().location]",
 	    "properties": {
@@ -148,7 +126,6 @@
 	    "name": "[parameters('vmName')]",
 	    "location": "[resourceGroup().location]",
 	    "dependsOn": [
-		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC1')]",
 		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC2')]",
 		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC3')]",
 		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC4')]"
@@ -161,6 +138,7 @@
 		    "computername": "[parameters('vmName')]",
 		    "adminUsername": "ubuntu",
 		    "adminPassword": "",
+		    "customData": "[base64(parameters('customData'))]",
 		    "linuxConfiguration": {
 			"disablePasswordAuthentication": "True",
 			"ssh": {

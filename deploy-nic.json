@@ -1,0 +1,54 @@
+
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+	"networkName": {
+	    "metadata": {
+		"description": "the name of the network to put the vm on"
+	    },
+	    "type": "string"
+	},
+	"subNet": {
+	    "metadata": {
+		"description": "subnet to assign vm to"
+	    },
+	    "type": "string"
+	},
+	"securityGroup": {
+	    "metadata": {
+		"description": "Security Group Name"
+	    },
+	    "type": "string"
+	},
+	"nicName": {
+	    "metaData": {
+		"description" : "Network Interface Name"
+	    },
+	    "type": "string"
+	}
+    },
+    "resources": [
+	{
+	    "apiVersion": "2015-06-15",
+	    "type": "Microsoft.Network/networkInterfaces",
+	    "name": "[parameters('nicName')]",
+	    "location": "[resourceGroup().location]",
+	    "properties": {
+		"networkSecurityGroup":{
+		    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('securityGroup'))]"
+		},
+		"ipConfigurations": [
+		    {
+			"name": "ipconfig1",
+			"properties": {
+			    "privateIPAllocationMethod": "Dynamic",
+			    "subnet": {
+				"id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')),'/subnets/',parameters('subNet'))]"
+			    }
+			}
+		    }
+		]
+	    }
+	}
+    ]
+}

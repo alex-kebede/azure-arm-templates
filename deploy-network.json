@@ -255,7 +255,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')), '/subnets/', 'GatewaySubnet')]"
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'VirtualNetwork'), '/subnets/', 'GatewaySubnet')]"
               },
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'VPNPublicIP')]"

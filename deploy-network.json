@@ -258,7 +258,7 @@
                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')), '/subnets/', 'GatewaySubnet')]"
               },
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses/VPNPublicIP'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'VPNPublicIP')]"
               }
             },
             "name": "vnetGatewayConfig"

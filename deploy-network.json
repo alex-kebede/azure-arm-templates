@@ -90,7 +90,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(resourceGroup().name, 'mgmtHostsa')]",
+      "name": "[concat(resourceGroup().name, 'mgmthostsa')]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "properties": {

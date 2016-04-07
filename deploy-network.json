@@ -90,7 +90,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(resourceGroup().name, 'MgmtHostSA')]",
+      "name": "[concat(resourceGroup().name, 'mgmthostsa')]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "properties": {
@@ -99,7 +99,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(resourceGroup().name, 'DockerHostSA')]",
+      "name": "[concat(resourceGroup().name, 'dockerhostsa')]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "properties": {
@@ -108,7 +108,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(resourceGroup().name, 'VolumesSA')]",
+      "name": "[concat(resourceGroup().name, 'volumessa')]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "properties": {
@@ -255,10 +255,10 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')), '/subnets/', 'GatewaySubnet')]"
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'VirtualNetwork'), '/subnets/', 'GatewaySubnet')]"
               },
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses/VPNPublicIP'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'VPNPublicIP')]"
               }
             },
             "name": "vnetGatewayConfig"

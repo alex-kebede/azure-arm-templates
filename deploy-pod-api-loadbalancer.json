@@ -4,19 +4,19 @@
   "parameters": {
     "loadBalancerName": {
       "type": "string",
+      "defaultValue": "podapi",
       "metadata": {
-        "description": "Name of the loadbalancer",
-        "defaultValue": "podapi"
+        "description": "Name of the loadbalancer"
       }
     },
     "vmName": {
       "type": "array",
+      "defaultValue": [
+        "mgmt01",
+        "mgmt02"
+      ],
       "metadata": {
         "description": "Name of the VM",
-        "defaultValue": [
-          "mgmt01",
-          "mgmt02"
-        ]
       }
     },
     "subnetID": {

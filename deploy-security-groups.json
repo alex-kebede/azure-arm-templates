@@ -37,7 +37,7 @@
               "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
-              "priority": 100,
+              "priority": 105,
               "direction": "Inbound"
             }
           },

@@ -28,6 +28,20 @@
             }
           },
           {
+            "name": "TEST",
+            "properties": {
+              "description": "TEST",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8888",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "Salt",
             "properties": {
               "description": "Salt",

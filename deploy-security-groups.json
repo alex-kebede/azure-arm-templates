@@ -28,20 +28,6 @@
             }
           },
           {
-            "name": "TEST",
-            "properties": {
-              "description": "TEST",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "8888",
-              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
-              "destinationAddressPrefix": "VirtualNetwork",
-              "access": "Allow",
-              "priority": 105,
-              "direction": "Inbound"
-            }
-          },
-          {
             "name": "Salt",
             "properties": {
               "description": "Salt",
@@ -66,6 +52,86 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DENYALL",
+            "properties": {
+              "description": "Deny all inbound traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "mgmt01SG",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "description": "SSH",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Orchestration",
+            "properties": {
+              "description": "Orchestration",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7411",
+              "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Pod-API",
+            "properties": {
+              "description": "Pod-API",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8000",
+              "sourceAddressPrefix": "AzureLoadBalancer",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Nessus",
+            "properties": {
+              "description": "Nessus Scanner",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "172.27.20.88/32",
+              "destinationPortRange": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 103,
               "direction": "Inbound"
             }
           },

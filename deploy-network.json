@@ -143,70 +143,70 @@
       "type": "Microsoft.Compute/availabilitySets",
       "name": "ASDocker",
       "location": "[resourceGroup().location]",
-      "properties": { 
+      "properties": {
         "platformUpdateDomainCount": 2,
         "platformFaultDomainCount": 2
-      } 
+      }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "ASBuild",
       "location": "[resourceGroup().location]",
-      "properties": { 
+      "properties": {
         "platformUpdateDomainCount": 2,
         "platformFaultDomainCount": 2
-      } 
+      }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "ASBatch",
       "location": "[resourceGroup().location]",
-      "properties": { 
+      "properties": {
         "platformUpdateDomainCount": 2,
         "platformFaultDomainCount": 2
-      } 
+      }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "ASConsole",
       "location": "[resourceGroup().location]",
-      "properties": { 
+      "properties": {
         "platformUpdateDomainCount": 2,
         "platformFaultDomainCount": 2
-      } 
+      }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "ASSalt",
       "location": "[resourceGroup().location]",
-      "properties": { 
+      "properties": {
         "platformUpdateDomainCount": 2,
         "platformFaultDomainCount": 2
-      } 
+      }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "ASMgmt",
       "location": "[resourceGroup().location]",
-      "properties": { 
+      "properties": {
         "platformUpdateDomainCount": 2,
         "platformFaultDomainCount": 2
-      } 
+      }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "ASPublic",
       "location": "[resourceGroup().location]",
-      "properties": { 
+      "properties": {
         "platformUpdateDomainCount": 2,
         "platformFaultDomainCount": 2
-      } 
+      }
     },
     {
       "apiVersion": "2015-06-15",
@@ -226,6 +226,20 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Nessus",
+            "properties": {
+              "description": "Nessus Scanner",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "172.27.20.88/32",
+              "destinationPortRange": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
               "direction": "Inbound"
             }
           }
@@ -250,7 +264,7 @@
         "[concat('Microsoft.Network/publicIPAddresses/VPNPublicIP')]"
       ],
       "properties": {
-        "ipConfigurations": [ 
+        "ipConfigurations": [
           {
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
@@ -280,4 +294,3 @@
     }
   ]
 }
-

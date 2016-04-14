@@ -53,8 +53,8 @@
               "access": "Allow",
               "priority": 102,
               "direction": "Inbound"
-            },
-          }
+            }
+          },
           {
             "name": "DENYALL",
             "properties": {

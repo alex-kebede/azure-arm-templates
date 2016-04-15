@@ -108,16 +108,30 @@
             }
           },
           {
+            "name": "Pod-API-Deny-Docker-Hosts",
+            "properties": {
+              "description": "Pod-API-Deny-Docker-Hosts",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8000",
+              "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Deny",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "Pod-API",
             "properties": {
               "description": "Pod-API",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "8000",
-              "sourceAddressPrefix": "AzureLoadBalancer",
+              "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
-              "priority": 102,
+              "priority": 103,
               "direction": "Inbound"
             }
           },
@@ -131,7 +145,7 @@
               "destinationPortRange": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 103,
+              "priority": 104,
               "direction": "Inbound"
             }
           },

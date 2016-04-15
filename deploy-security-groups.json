@@ -301,6 +301,170 @@
           }
         ]
       }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "sensuSG",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "description": "SSH",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "dashboard-access-80",
+            "properties": {
+              "description": "dashboard-access-80",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "192.168.237.0/24",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "dashboard-access-8080",
+            "properties": {
+              "description": "dashboard-access-8080",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "192.168.237.0/24",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "logging-general",
+            "properties": {
+              "description": "logging-general",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "1514-1515",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 103,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "ossec",
+            "properties": {
+              "description": "ossec",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "1520",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 104,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "collectd",
+            "properties": {
+              "description": "collectd",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "2003",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "sensu-api",
+            "properties": {
+              "description": "sensu-api",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4567",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 106,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "logging-pod-api",
+            "properties": {
+              "description": "logging-pod-api",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5043",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 107,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "sensu-rabbit",
+            "properties": {
+              "description": "sensu-rabbit",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5671 - 5672",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 108,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Nessus",
+            "properties": {
+              "description": "Nessus Scanner",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "172.27.20.88/32",
+              "destinationPortRange": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 109,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DENYALL",
+            "properties": {
+              "description": "Deny all inbound traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
     }
   ]
 }

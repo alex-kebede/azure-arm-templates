@@ -114,7 +114,7 @@
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "7411",
-              "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt02NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
               "priority": 102,

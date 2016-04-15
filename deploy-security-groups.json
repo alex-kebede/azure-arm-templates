@@ -465,6 +465,208 @@
           }
         ]
       }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "dockerSG",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "description": "SSH",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Strider",
+            "properties": {
+              "description": "Strider",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7443",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Console",
+            "properties": {
+              "description": "Console",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "2376",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/console01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "apps",
+            "properties": {
+              "description": "apps-1",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22000-25999",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 103,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "interappcom",
+            "properties": {
+              "description": "interappcom",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 104,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Nessus",
+            "properties": {
+              "description": "Nessus Scanner",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "172.27.20.88/32",
+              "destinationPortRange": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DENYALL",
+            "properties": {
+              "description": "Deny all inbound traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "consoleSG",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "description": "SSH",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "console",
+            "properties": {
+              "description": "console",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "console-admin-mgmt01",
+            "properties": {
+              "description": "console-admin-mgmt01",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9443",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "console-admin-mgmt02",
+            "properties": {
+              "description": "console-admin-mgmt02",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9443",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt02NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 103,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Nessus",
+            "properties": {
+              "description": "Nessus Scanner",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "172.27.20.88/32",
+              "destinationPortRange": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 104,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DENYALL",
+            "properties": {
+              "description": "Deny all inbound traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
     }
   ]
 }

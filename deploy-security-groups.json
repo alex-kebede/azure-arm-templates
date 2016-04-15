@@ -94,9 +94,9 @@
             }
           },
           {
-            "name": "Orchestration",
+            "name": "Orchestration-registry-docker",
             "properties": {
-              "description": "Orchestration",
+              "description": "Orchestration-registry-docker",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "7411",
@@ -108,16 +108,44 @@
             }
           },
           {
+            "name": "Orchestration-registry-mgmt02",
+            "properties": {
+              "description": "Orchestration-registry-mgmt02",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7411",
+              "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Orchestration-sched-mgmt02",
+            "properties": {
+              "description": "Orchestration-sched-mgmt02",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7400",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt02NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 103,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "Pod-API-Deny-Docker-Hosts",
             "properties": {
               "description": "Pod-API-Deny-Docker-Hosts",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "8000",
-              "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
+              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt02NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Deny",
-              "priority": 102,
+              "priority": 104,
               "direction": "Inbound"
             }
           },
@@ -131,7 +159,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
-              "priority": 103,
+              "priority": 105,
               "direction": "Inbound"
             }
           },
@@ -145,7 +173,7 @@
               "destinationPortRange": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 104,
+              "priority": 106,
               "direction": "Inbound"
             }
           },

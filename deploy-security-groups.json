@@ -411,7 +411,7 @@
             "name": "collectd",
             "properties": {
               "description": "collectd",
-              "protocol": "*",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "2003",
               "sourceAddressPrefix": "VirtualNetwork",
@@ -425,7 +425,7 @@
             "name": "sensu-api",
             "properties": {
               "description": "sensu-api",
-              "protocol": "*",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "4567",
               "sourceAddressPrefix": "VirtualNetwork",
@@ -439,7 +439,7 @@
             "name": "logging-pod-api",
             "properties": {
               "description": "logging-pod-api",
-              "protocol": "*",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "5043",
               "sourceAddressPrefix": "VirtualNetwork",
@@ -453,7 +453,7 @@
             "name": "sensu-rabbit",
             "properties": {
               "description": "sensu-rabbit",
-              "protocol": "*",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "5671 - 5672",
               "sourceAddressPrefix": "VirtualNetwork",

@@ -49,6 +49,17 @@
         "description" : "Custom Data Script"
       },
       "type": "string"
+    },
+    "vmSize": {
+        "metadata": {
+      "description": "VM Size"
+        },
+        "type": "string",
+        "allowedValues":[
+      "Standard_DS12",
+      "Standard_DS3",
+      "Standard_A1"
+        ]
     }
   },
   "variables": {
@@ -75,7 +86,7 @@
         "[concat('Microsoft.Network/publicIPAddresses/', parameters('vmName'), 'PublicIPAddress')]"
       ],
       "properties": {
-        "networkSecurityGroup":{  
+        "networkSecurityGroup":{
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('securityGroup'))]"
         },
         "ipConfigurations": [
@@ -107,7 +118,7 @@
           "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySet'))]"
         },
         "hardwareProfile": {
-          "vmSize": "Standard_DS12"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computername": "[parameters('vmName')]",

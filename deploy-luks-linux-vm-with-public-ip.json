@@ -58,7 +58,7 @@
         "allowedValues":[
       "Standard_DS12",
       "Standard_DS3",
-      "Standard_A1"
+      "Standard_DS1"
         ]
     }
   },

@@ -244,6 +244,20 @@
             }
           },
           {
+            "name": "Fladnag",
+            "properties": {
+              "description": "Fladnag",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22222",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 103,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "Postgresql-mgmt01",
             "properties": {
               "description": "Postgresql from mgmt01",
@@ -253,7 +267,7 @@
               "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
-              "priority": 103,
+              "priority": 104,
               "direction": "Inbound"
             }
           },
@@ -267,7 +281,7 @@
               "sourceAddressPrefix": "VirtualNetwork",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
-              "priority": 104,
+              "priority": 105,
               "direction": "Inbound"
             }
           },
@@ -281,7 +295,7 @@
               "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt01NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
-              "priority": 105,
+              "priority": 106,
               "direction": "Inbound"
             }
           },
@@ -295,7 +309,7 @@
               "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
-              "priority": 106,
+              "priority": 107,
               "direction": "Inbound"
             }
           },
@@ -309,7 +323,7 @@
               "destinationPortRange": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 107,
+              "priority": 108,
               "direction": "Inbound"
             }
           },

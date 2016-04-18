@@ -9,16 +9,6 @@
         "description": "Name of the loadbalancer"
       }
     },
-    "vmName": {
-      "type": "array",
-      "defaultValue": [
-        "mgmt01",
-        "mgmt02"
-      ],
-      "metadata": {
-        "description": "Name of the VM",
-      }
-    },
     "subnetID": {
       "type": "string",
       "metadata": {
@@ -115,12 +105,8 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(parameters('vmName')[copyIndex()], 'NIC')]",
+      "name": "mgmt01NIC",
       "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "lbniccopy",
-        "count": "[length(parameters('vmName'))]"
-      },
       "dependsOn": [
         "[concat('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'), 'LB')]"
       ],
@@ -135,6 +121,35 @@
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')),'/backendAddressPools/loadBalancerBackEnd')]"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "mgmt02NIC",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'), 'LB')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "subnet": {
+                "id": "[parameters('subnetID')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')),'/backendAddressPools/loadBalancerBackEnd')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'fladnagLB'), '/backendAddressPools/loadBalancerBackEnd')]"
                 }
               ]
             }

@@ -55,10 +55,10 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/localNetworkGateways/', parameters('siteName'), 'LocalNetworkGateway')]"
-      ], 
+      ],
       "properties": {
         "virtualNetworkGateway1": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', 'raxVirtualNetworkGateway')]"
+          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', 'VirtualNetworkGateway')]"
         },
         "localNetworkGateway2": {
           "id": "[resourceId('Microsoft.Network/localNetworkGateways', concat(parameters('siteName'), 'LocalNetworkGateway'))]"
@@ -70,4 +70,3 @@
     }
   ]
 }
-

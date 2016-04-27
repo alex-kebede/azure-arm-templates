@@ -142,7 +142,7 @@
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "8000",
-              "sourceAddressPrefix": "[concat(reference('Microsoft.Network/networkInterfaces/mgmt02NIC/ipConfigurations/ipconfig1', '2015-06-15').privateIPAddress, '/32')]",
+              "sourceAddressPrefix": "[reference('Microsoft.Network/virtualNetworks/VirtualNetwork/subnets/SubnetDocker', '2015-06-15').addressPrefix]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Deny",
               "priority": 104,

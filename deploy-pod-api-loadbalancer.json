@@ -60,24 +60,6 @@
               "backendPort": "8000",
               "idleTimeoutInMinutes": 15
             }
-          },
-          {
-            "name": "Rule2",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/frontendIpConfigurations/loadBalancerFrontEnd1')]"
-              },
-              "backendAddressPool": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/backendAddressPools/loadBalancerBackEnd')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', concat(parameters('loadBalancerName'), 'LB')), '/probes/probe2')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": "8001",
-              "backendPort": "8001",
-              "idleTimeoutInMinutes": 15
-            }
           }
         ],
         "probes": [
@@ -86,15 +68,6 @@
             "properties": {
               "protocol": "Tcp",
               "port": "8000",
-              "intervalInSeconds": 15,
-              "numberOfProbes": 1
-            }
-          },
-          {
-            "name": "probe2",
-            "properties": {
-              "protocol": "Tcp",
-              "port": "8001",
               "intervalInSeconds": 15,
               "numberOfProbes": 1
             }

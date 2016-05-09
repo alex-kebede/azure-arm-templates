@@ -1,0 +1,235 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+	      "networkName": {
+	          "metadata": {
+		            "description": "the name of the network to put the vm on"
+	          },
+	          "type": "string"
+	      },
+    	  "storageAccount": {
+    	      "metadata": {
+    		        "description": "storage account"
+    	      },
+    	      "type": "string"
+    	  },
+    	  "subNet": {
+    	      "metadata": {
+    		        "description": "subnet to assign vm to"
+    	      },
+    	      "type": "string"
+    	  },
+    	  "availabilitySet": {
+    	      "metadata": {
+    		        "description": "Availability Set name to assign host to"
+    	      },
+    	      "type": "string"
+    	  },
+    	  "securityGroup": {
+    	      "metadata": {
+    		        "description": "Security Group Name"
+    	      },
+    	      "type": "string"
+    	  },
+    	  "vmSize": {
+    	      "metadata": {
+    		        "description": "VM Size"
+    	      },
+    	      "type": "string",
+    	      "allowedValues":[
+    		        "Standard_DS12",
+    		        "Standard_DS3",
+    	          "Standard_A1"
+    	      ]
+    	  },
+    	  "vmName": {
+    	      "metadata": {
+    		        "description": "Name of the virtual machine"
+    	      },
+    	      "type": "string"
+    	  },
+    	  "customData": {
+    	      "metaData": {
+    		        "description" : "Custom Data Script"
+    	      },
+    	      "type": "string"
+    	  },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Admin user name for the virtual machine"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Admin user password for virtual machine"
+            }
+        },
+        "aadClientID": {
+            "type": "string",
+            "metadata": {
+                "description": "Client ID of AAD app which has permissions to KeyVault"
+            }
+        },
+        "aadClientSecret": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Client Secret of AAD app which has permissions to KeyVault"
+            }
+        },
+        "keyVaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the KeyVault to place the volume/OS encryption keys"
+            }
+        },
+        "keyVaultResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource group of the KeyVault"
+            }
+        },
+        "keyEncryptionKeyURL": {
+            "type": "string",
+            "metadata": {
+                "description": "URL of the KeyEncryptionKey used to encrypt the volume/OS encryption keys"
+            }
+        },
+        "sequenceVersion": {
+            "type": "string",
+            "metadata": {
+                "description": "A globally unique string for Bitlocker operation. A GUID works well"
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+	      {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'), 'NIC')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "networkSecurityGroup":{
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('securityGroup'))]"
+                },
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+			                      "subnet": {
+				                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkName')),'/subnets/',parameters('subNet'))]"
+			                      }
+			                  }
+		                }
+		            ]
+            }
+        },
+        {
+	          "apiVersion": "2015-06-15",
+	          "type": "Microsoft.Compute/virtualMachines",
+	          "name": "[parameters('vmName')]",
+	          "location": "[resourceGroup().location]",
+	          "dependsOn": [
+		            "[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 'NIC')]"
+	          ],
+	          "properties": {
+		            "availabilitySet": {
+		                "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySet'))]"
+		            },
+		            "hardwareProfile": {
+		                "vmSize": "[parameters('vmSize')]"
+		            },
+		            "osProfile": {
+		                "computername": "[parameters('vmName')]",
+		                "adminUsername": "[parameters('adminUsername')]",
+		                "adminPassword": "[parameters('adminPassword')]"
+                },
+		            "storageProfile": {
+		                "imageReference": {
+			                  "publisher": "MicrosoftWindowsServer",
+			                  "offer": "WindowsServer",
+			                  "sku": "2012-R2-Datacenter",
+			                  "version": "latest"
+		                },
+		                "osDisk": {
+			                  "name": "osdisk",
+			                  "vhd": {
+			                      "uri": "[concat('http://', parameters('storageAccount'),'.blob.core.windows.net/root/', parameters('vmName'),'.vhd')]"
+			                  },
+			                  "caching": "ReadWrite",
+			                  "createOption": "FromImage"
+                    },
+		                "dataDisks": [
+                        {
+			                      "name": "data",
+			                      "diskSizeGB": "150",
+			                      "lun": 0,
+			                      "vhd": {
+			                          "uri": "[concat('http://', parameters('storageAccount'),'.blob.core.windows.net/data/', parameters('vmName'),'.vhd')]"
+			                      },
+			                      "createOption":"Empty"
+		                    }
+                    ]
+                },
+		            "networkProfile": {
+		                "networkInterfaces": [
+			                  {
+			                      "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'NIC'))]"
+			                  }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "UpdateEncryptionSettings",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-encrypt-running-windows-vm/azuredeploy.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "vmName": {
+                        "value": "[parameters('vmName')]"
+                    },
+                    "aadClientID": {
+                        "value": "[parameters('aadClientID')]"
+                    },
+                    "aadClientSecret": {
+                        "value": "[parameters('aadClientSecret')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('keyVaultName')]"
+                    },
+                    "keyVaultResourceGroup": {
+                        "value": "[parameters('keyVaultResourceGroup')]"
+                    },
+                    "useExistingKek": {
+                        "value": "kek"
+                    },
+                    "keyEncryptionKeyURL": {
+                        "value": "[parameters('keyEncryptionKeyURL')]"
+                    },
+                    "volumeType": {
+                        "value": "All"
+                    },
+                    "sequenceVersion": {
+                        "value": "[parameters('sequenceVersion')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
